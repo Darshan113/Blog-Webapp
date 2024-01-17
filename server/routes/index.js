@@ -1,1 +1,1 @@
-exports.Authentication = require('./Authentication.routes')
+exports.Authentication = require('./Authentication.route')
