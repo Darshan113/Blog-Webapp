@@ -1,5 +1,5 @@
 const httpStatus = require("http-status")
-const { UserModel } = require("../models")
+const { UserModel, BlogPostModel } = require("../models")
 const ApiError = require("../utils/ApiError")
 const { generateToken } = require("../utils/jwt.util")
 
@@ -38,9 +38,46 @@ const userProfile = async(id)=>{
     return await UserModel.findById(id).select("name email")
 }
 
+const createPost = async(user,body,file) =>{
+    const {title,content} = body
+    const newTitle = title.split(' ').join('-')
+    const isBlogExist = await BlogPostModel.findOne({title}) 
+    if(isBlogExist){
+        throw new ApiError(httpStatus.BAD_REQUEST,'Title Already Exists Try With Other Name')
+    }
+    const post =  await BlogPostModel.create({
+        title,
+        slug : newTitle,
+        content,
+        image : file.filename,
+        user:user
+    })
+
+    return post
+}
+
+
+const getAllPost = async()=>{
+   const posts =  await BlogPostModel.find({isDeleted : false}).populate('user','name email')
+   return {posts , total : posts.length}
+}
+
+const getParticularPost = async(id)=>{
+   const post =  await BlogPostModel.findOne({_id:id , isDeleted : false}).populate('user','name email')
+   return {post}
+}
+
+const deleteParticularPost = async(id)=>{
+   const post =  await BlogPostModel.findByIdAndUpdate(id,{isDeleted : true})
+   return {message : "post deleted successfully"}
+}
 
 module.exports = {
     register,
     login,
-    userProfile
+    userProfile,
+    createPost,
+    getAllPost,
+    getParticularPost,
+    deleteParticularPost
 }

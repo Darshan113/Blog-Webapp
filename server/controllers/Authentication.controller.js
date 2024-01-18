@@ -22,6 +22,30 @@ class AuthenticationController {
         res.status(httpStatus.OK).send(res_obj)
     })
 
+        // create blog Post 
+        static Post = catchAsync(async(req,res) =>{
+            const res_obj = await AuthenticationService.createPost(req?.user,req?.body,req?.file)
+            res.status(httpStatus.CREATED).send(res_obj)
+        })
+
+        // get all blog Post 
+        static getPost = catchAsync(async(req,res) =>{
+            const res_obj = await AuthenticationService.getAllPost()
+            res.status(httpStatus.OK).send(res_obj)
+        })
+
+        // get single post by id
+        static getPostById = catchAsync(async(req,res) =>{
+            const res_obj = await AuthenticationService.getParticularPost(req.params.id)
+            res.status(httpStatus.OK).send(res_obj)
+        })
+
+        // delete post by id
+        static deletePostById = catchAsync(async(req,res) =>{
+            const res_obj = await AuthenticationService.deleteParticularPost(req.params.id)
+            res.status(httpStatus.OK).send(res_obj)
+        })
+
 }
 
 module.exports = AuthenticationController

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const { boolean } = require('joi');
 
 const Schema = new mongoose.Schema({
     title : {
@@ -22,6 +23,10 @@ const Schema = new mongoose.Schema({
     content : {
         type : String , 
         required : true
+    },
+    isDeleted : {
+        type : Boolean,
+        default : false
     }
 },{
     timestamps : true

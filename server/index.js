@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 const httpStatus = require('http-status');
+const path = require('path');
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -17,6 +18,8 @@ app.use(express.json())
 app.use(express.urlencoded({extended : true}))
 
 // routes
+console.log(__dirname)
+app.use('/static',express.static(path.join(__dirname,'./uploads')))
 app.use('/api/v1',Authentication)
 
 app.get('/',(req,res)=>{
