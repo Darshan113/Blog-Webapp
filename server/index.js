@@ -1,3 +1,4 @@
+require('dotenv').config({path : './.env'})
 const express = require('express');
 const { Authentication } = require('./routes');
 const { connectDB } = require('./config/db');
@@ -7,7 +8,7 @@ const ApiError = require('./utils/ApiError');
 const httpStatus = require('http-status');
 
 const app = express()
-const port = 8000
+const port = process.env.PORT || 3000
 connectDB()
 
 // middleware
@@ -35,5 +36,5 @@ app.use((req, res, next) => {
   
 
 app.listen(port,(er)=>{
-    console.log(er ? er : 'server started at port 8000',)
+    console.log(er ? er : 'server started at port',port)
 })
